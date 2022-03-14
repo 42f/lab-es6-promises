@@ -26,6 +26,13 @@
 // }, (error) => console.log(error));
 
 
+function appendElement(id, step) {
+  document.querySelector(id).innerHTML += `<li>${step}</li>`
+}
+
+function unhideElement(id) {
+  document.querySelector(id).removeAttribute("hidden");
+}
 
 // Iteration 1 - using callbacks
 getInstruction('mashedPotatoes', 0, (step0) => {
@@ -46,72 +53,69 @@ getInstruction('mashedPotatoes', 0, (step0) => {
 });
 
 // Iteration 2 - using promises
-function appendSteakElement(step) {
-  document.querySelector("#steak").innerHTML += `<li>${step}</li>`
-}
-
 obtainInstruction('steak', 0)
   .then((step) => {
-    appendSteakElement(step);
+    appendElement('#steak', step);
     return obtainInstruction('steak', 1);
   })
   .then((step) => {
-    appendSteakElement(step);
+    appendElement('#steak', step);
     return obtainInstruction('steak', 2);
   })
   .then((step) => {
-    appendSteakElement(step);
+    appendElement('#steak', step);
     return obtainInstruction('steak', 3);
   })
   .then((step) => {
-    appendSteakElement(step);
+    appendElement('#steak', step);
     return obtainInstruction('steak', 4);
   })
   .then((step) => {
-    appendSteakElement(step);
+    appendElement('#steak', step);
     return obtainInstruction('steak', 5);
   })
   .then((step) => {
-    appendSteakElement(step);
+    appendElement('#steak', step);
     return obtainInstruction('steak', 6);
   })
   .then((step) => {
-    appendSteakElement(step);
+    appendElement('#steak', step);
     return obtainInstruction('steak', 7);
   })
   .then((step) => {
-    appendSteakElement(step);
-    document.querySelector('#steakImg').removeAttribute("hidden");
+    appendElement('#steak', step);
+    unhideElement('#steakImg')
   });
 
 // Iteration 3 using async/await
-
+// try / catch block approach
 async function makeBroccoli() {
-  const broccoliElement = document.querySelector("#broccoli");
   let err = false;
-  let step = 0;
-  while (!err) {
-    await obtainInstruction('broccoli', step++)
-      .then((step) => { broccoliElement.innerHTML += `<li>${step}</li>` })
-      .catch(() => { err = true })
+  let stepNb = 0;
+  try {
+    while (!err) {
+      const step = await obtainInstruction('broccoli', stepNb++);
+      appendElement('#broccoli', step);
+    }
+  } catch {
+    unhideElement('#broccoliImg')
   }
-  document.querySelector('#broccoliImg').removeAttribute("hidden");
 }
 
 makeBroccoli();
 
 
 // Bonus 2 - Promise all
+// then catch chaining approach
 async function makeBrusselsSprouts() {
-  const brusselsSproutsElement = document.querySelector("#brusselsSprouts");
   let err = false;
   let step = 0;
   while (!err) {
     await obtainInstruction('brusselsSprouts', step++)
-      .then((step) => { brusselsSproutsElement.innerHTML += `<li>${step}</li>` })
-      .catch(() => { err = true })
+    .then((step) => { appendElement('#brusselsSprouts', step) })
+    .catch(() => { err = true })
   }
-  document.querySelector('#brusselsSproutsImg').removeAttribute("hidden");
+  unhideElement('#brusselsSproutsImg')
 }
 
 makeBrusselsSprouts();
