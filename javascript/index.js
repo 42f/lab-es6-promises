@@ -90,10 +90,9 @@ obtainInstruction('steak', 0)
 // Iteration 3 using async/await
 // try / catch block approach
 async function makeBroccoli() {
-  let err = false;
   let stepNb = 0;
   try {
-    while (!err) {
+    while (true) {
       const step = await obtainInstruction('broccoli', stepNb++);
       appendElement('#broccoli', step);
     }
@@ -108,16 +107,14 @@ makeBroccoli();
 // Bonus 2 - Promise all
 // then catch chaining approach
 async function makeBrusselsSprouts() {
-  let err = false;
+  let end = false;
   let step = 0;
-  while (!err) {
+  while (!end) {
     await obtainInstruction('brusselsSprouts', step++)
     .then((step) => { appendElement('#brusselsSprouts', step) })
-    .catch(() => { err = true })
+    .catch(() => { end = true })
   }
   unhideElement('#brusselsSproutsImg')
 }
 
 makeBrusselsSprouts();
-
-
